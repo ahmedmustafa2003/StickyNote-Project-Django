@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Sticky Notes{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        max-width: 450px;
+        margin: 3rem auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .auth-title {
+        color: #333;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        text-align: center;
+    }
+    
+    .auth-subtitle {
+        color: #666;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control {
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .form-errors {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+    
+    .form-errors p {
+        margin: 0;
+    }
+    
+    .submit-btn {
+        width: 100%;
+        padding: 0.75rem;
+        font-weight: 600;
+        font-size: 1.05rem;
+        margin-top: 0.5rem;
+    }
+    
+    .auth-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: #666;
+    }
+    
+    .auth-link a {
+        color: #667eea;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    
+    .auth-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Login form container -->
+<div class="auth-container">
+    <!-- Greeting -->
+    <h2 class="auth-title">Khush Aamdeed!</h2>
+    <!-- Subtitle -->
+    <p class="auth-subtitle">Apne notes tak phir se access pane ke liye login Karen</p>
+    
+    <!-- Koi non-field errors ho to dikha do -->
+    {% if form.non_field_errors %}
+        <div class="form-errors">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Username Field -->
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+            <input 
+                type="text" 
+                name="username" 
+                id="{{ form.username.id_for_label }}" 
+                class="form-control" 
+                placeholder="Enter your username"
+                required
+            >
+            {% if form.username.errors %}
+                <div class="form-errors mt-2 mb-0">
+                    {% for error in form.username.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Password Field -->
+        <div class="form-group">
+            <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+            <input 
+                type="password" 
+                name="password" 
+                id="{{ form.password.id_for_label }}" 
+                class="form-control" 
+                placeholder="Enter your password"
+                required
+            >
+            {% if form.password.errors %}
+                <div class="form-errors mt-2 mb-0">
+                    {% for error in form.password.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-lg submit-btn">
+            Sign In
+        </button>
+    </form>
+    
+    <div class="auth-link">
+        Don't have an account? <a href="{% url 'notes:register' %}">Register here</a>
+    </div>
+</div>
+{% endblock %}
